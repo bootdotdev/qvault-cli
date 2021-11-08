@@ -2,15 +2,19 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
-const readableConfigFilePath = "$HOME/.qvault.json"
+const configFileName = ".qvault.json"
 
-func getConfigFilePath() string {
-	return fmt.Sprintf("%s/.qvault.json", os.Getenv("HOME"))
+func getConfigFilePath() (string, error) {
+	dirname, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(dirname, configFileName), nil
 }
 
 type configStructure struct {
@@ -29,15 +33,23 @@ func runAuth() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	path, err := getConfigFilePath()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	err = os.WriteFile(getConfigFilePath(), dat, os.FileMode(0600))
+	err = os.WriteFile(path, dat, os.FileMode(0600))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func getAuth() (string, error) {
-	dat, err := os.ReadFile(getConfigFilePath())
+	path, err := getConfigFilePath()
+	if err != nil {
+		log.Fatal(err)
+	}
+	dat, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
 	}

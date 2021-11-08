@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -18,8 +19,13 @@ func main() {
 
 	apiKey, err := getAuth()
 	if err != nil {
-		fmt.Println("API key not found in", readableConfigFilePath)
-		fmt.Println("Please run 'qvault auth [token]")
+		path, err := getConfigFilePath()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("API key not found in", path)
+		fmt.Println("Please run 'qvault auth [token]'")
 		os.Exit(1)
 	}
 
