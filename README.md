@@ -1,2 +1,3 @@
 # qvault-cli
-Qvault CLI for completing projects
+
+Qvault CLI for passing-off projects in the [Qvault platform](https://qvault.io)
