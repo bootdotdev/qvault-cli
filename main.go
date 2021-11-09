@@ -17,6 +17,11 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 1 && os.Args[1] == "project" {
+		setProjectUUID()
+		return
+	}
+
 	apiKey, err := getAuth()
 	if err != nil {
 		path, err := getConfigFilePath()
@@ -29,13 +34,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if len(os.Args) > 1 && os.Args[1] == "current" {
-		runCurrent(apiKey)
-		return
-	}
-
-	if len(os.Args) > 1 && os.Args[1] == "exec" {
-		runExec(apiKey)
+	if len(os.Args) > 1 && os.Args[1] == "check" {
+		runCheck(apiKey)
 		return
 	}
 }
